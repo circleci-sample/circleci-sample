@@ -9,13 +9,14 @@ jobs:
       - run:
           name: "npm audit結果を.npm_audit.logファイルに格納する"
           command:
-            cd project && npm audit --parseable | awk -F $'\t' '{print $4}' >> .npm_audit.log
+            cd project/
+            npm audit --parseable | awk -F $'\t' '{print $4}' >> .npm_audit.log
       - run:
           name: "GitHub Issueに投げる"
           command:
-            cd project
+            cd project/
             body=`cat .npm_audit.log`
-            curl -u "$REPORTER":"$TOKEN" -X POST -i -d '{"title":"npm audit","body":"${body}"' https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/issues
+            curl -u "${GITHUB_USER}":"${GITHUB_TOKEN}" -X POST -i -d '{"title":"npm audit","body":"${body}"' https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/issues
 workflows:
   version: 2
   audit:
