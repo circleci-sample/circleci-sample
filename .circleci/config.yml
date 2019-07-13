@@ -4,6 +4,7 @@ jobs:
   audit_job:
     docker:
         - image: circleci/node
+    working_directory: ~/project
     steps:
       - checkout
       - run:
