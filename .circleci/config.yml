@@ -15,7 +15,7 @@ jobs:
           name: "GitHub Issueに投げる"
           command: |
             body=`cat /home/circleci/project/.npm_audit.log`
-            curl -u "${GITHUB_USER}":"${GITHUB_TOKEN}" -X POST -i -d '{"title":"npm audit","body":${body}' https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/issues
+            curl -u "${GITHUB_USER}":"${GITHUB_TOKEN}" -X POST -i -d '{"title":"npm audit","body":"'"${body}"'"' https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/issues
 workflows:
   version: 2
   audit:
