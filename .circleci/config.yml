@@ -6,7 +6,7 @@ jobs:
         - image: circleci/node
     steps:
       - checkout
-      - run: cd project/
+      - run: cd /home/circleci/project
       - run:
           name: "npm audit結果を.npm_audit.logファイルに格納する"
           command:
