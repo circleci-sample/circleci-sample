@@ -5,6 +5,7 @@ jobs:
     docker:
         - image: circleci/node
     steps:
+      - checkout
       - run:
           name: "npm audit結果を.npm_audit.logファイルに格納する"
           command:
