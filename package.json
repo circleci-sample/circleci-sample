@@ -1,0 +1,16 @@
+{
+    "name": "circleci-sample",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/uraway/circleci-sample.git",
+    "author": "uraway <masato.uraway@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "marked": "0.5.0",
+        "lodash": "4.17.10"
+    },
+    "scripts": {
+        "build": "echo 'build'",
+        "test": "ls -la node_modules"
+    }
+}
