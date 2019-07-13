@@ -10,6 +10,7 @@ jobs:
       - run:
           name: "npm audit結果を.npm_audit.logファイルに格納する"
           command: |
+            pwd
             npm audit --parseable | awk -F $'\t' '{print $4}' >> .npm_audit.log
       - run:
           name: "GitHub Issueに投げる"
