@@ -21,7 +21,7 @@ jobs:
                     "title": "npm audit",
                     "body" : "$body"
                 }
-                EOF
+            EOF
 workflows:
   version: 2
   audit:
