@@ -13,8 +13,8 @@ jobs:
       - run:
           name: "Gitのセットアップ"
           command: |
-            git config user.name "uraway"
-            git config user.email "masato.uraway@gmail.com"
+            git config user.name "CircleCI"
+            git config user.email "circleci@example.com"
       - run:
           name: "更新結果をコミットする"
           command: |
@@ -33,7 +33,7 @@ jobs:
                 {
                     "title": "npm audit fix",
                     "base": "master",
-                    "head" : "${branch}"
+                    "head" : "${CIRCLE_PROJECT_USERNAME}:${branch}"
                 }
             EOF
 workflows:
