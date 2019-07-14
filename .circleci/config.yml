@@ -8,8 +8,8 @@ jobs:
       - checkout
       - run: # ・・・ 1
           name: "npm audit結果を.npm_audit.logファイルに格納する"
+          shell: set +e
           command: |
-            set +e
             npm audit --parseable | awk -F $'\t' '{print $4}' >> .npm_audit.log
 
             if [ "$?" -eq 0 ]; then
@@ -18,7 +18,6 @@ jobs:
             fi
       - run: # ・・・ 2
           name: "GitHub Issueに投げる"
-          when: on_fail
           command: |
             body=`cat .npm_audit.log | sed 's/$/<br>/'`
 
