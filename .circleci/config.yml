@@ -15,7 +15,7 @@ jobs:
           command: |
             if [ npm audit ]; then
               echo "脆弱性のある依存パッケージなし"
-              exit 0
+              circleci step halt
             fi
 
             body=`cat .npm_audit.log | sed 's/$/<br>/'`
