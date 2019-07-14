@@ -6,8 +6,8 @@
     "author": "uraway <masato.uraway@gmail.com>",
     "license": "MIT",
     "dependencies": {
-        "marked": "0.7.0",
-        "lodash": "4.17.14"
+        "marked": "0.5.0",
+        "lodash": "4.17.10"
     },
     "scripts": {
         "build": "echo 'build'",
