@@ -18,7 +18,7 @@ jobs:
       - run:
           name: "更新結果をコミットする"
           command: |
-            branch="testtest"
+            branch="aaaa"
             git branch $branch
             git checkout $branch
             git add package.json package-lock.json
@@ -33,7 +33,7 @@ jobs:
                 {
                     "title": "npm audit fix",
                     "base": "master",
-                    "head" : "origin:${branch}"
+                    "head" : "${branch}"
                 }
             EOF
 workflows:
