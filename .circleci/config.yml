@@ -4,6 +4,8 @@ jobs:
   audit_job:
     docker:
         - image: circleci/node
+    environment:
+        BRANCH: npm_audit_fix/${CIRCLE_SHA1}
     steps:
       - checkout
       - run:
@@ -18,12 +20,11 @@ jobs:
       - run:
           name: "更新結果をコミットする"
           command: |
-            export branch="npm_audit_test"
-            git branch $branch
-            git checkout $branch
+            git branch $BRANCH
+            git checkout $BRANCH
             git add package.json package-lock.json
             git commit -m "Security Update from ${CIRCLE_BUILD_URL}"
-            git push origin $branch
+            git push origin $BRANCH
       - run:
           name: "GitHub PRを作成する"
           command: |
@@ -33,7 +34,7 @@ jobs:
                 {
                     "title": "npm audit fix",
                     "base": "master",
-                    "head" : "${branch}"
+                    "head" : "${BRANCH}"
                 }
             EOF
 workflows:
