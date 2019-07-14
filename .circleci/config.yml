@@ -40,7 +40,7 @@ jobs:
             EOF
       - run:
           when: on_fail
-          command: "No vulnerabilities found"
+          command: echo "No vulnerabilities found"
 workflows:
   version: 2
   audit:
