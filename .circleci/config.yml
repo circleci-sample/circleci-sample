@@ -7,16 +7,16 @@ jobs:
     steps:
       - checkout
       - run:
-          name: ""
+          name: "npm audit fixコマンドで依存パッケージを更新する"
           command: |
             npm audit fix
       - run:
           name: "Gitのセットアップ"
           command: |
-            git config user.name "CircleCI"
-            git config user.email "circleci@example.com"
+            git config user.name "uraway"
+            git config user.email "masato.uraway@gmail.com"
       - run:
-          name: "GitHub PRを作成する"
+          name: "更新結果をコミットする"
           command: |
             branch="npm_audit/${CIRCLE_SHA1}"
             git branch $branch
@@ -24,7 +24,9 @@ jobs:
             git add package.json package-lock.json
             git commit -m "Security Update from ${CIRCLE_BUILD_URL}"
             git push origin $branch
-
+      - run:
+          name: "GitHub PRを作成する"
+          command: |
             curl -u "${GITHUB_USER}":"${GITHUB_TOKEN}" -X POST -i \
                 https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls \
                 -d @- \<< EOF
