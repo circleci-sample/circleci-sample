@@ -26,6 +26,7 @@ jobs:
             git add package.json package-lock.json
             git commit -m "Security Update from ${CIRCLE_BUILD_URL}" && git push origin $BRANCH
       - run:
+          name: "Nothing to commit"
           when: on_fail
           command: echo "No vulnerabilities found"
       - run:
