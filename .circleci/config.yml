@@ -13,7 +13,7 @@ jobs:
       - run: # ・・・ 2
           name: "GitHub Issueに投げる"
           command: |
-            if [ ! npm audit ]; then
+            if [ npm audit ]; then
               echo "脆弱性のある依存パッケージなし"
               exit 0
             fi
