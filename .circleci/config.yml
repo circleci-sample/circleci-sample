@@ -9,9 +9,10 @@ jobs:
       - run:
           name: "npm audit結果を.npm_audit.logファイルに格納する"
           command: |
-            npm audit --parseable | awk -F $'\t' '{print $4}' >> .npm_audit.log || true
+            npm audit --parseable | awk -F $'\t' '{print $4}' >> .npm_audit.log
       - run:
           name: "GitHub Issueに投げる"
+          when: on_fail
           command: |
             body=`cat .npm_audit.log | sed 's/$/<br>/'`
             curl -u "${GITHUB_USER}":"${GITHUB_TOKEN}" -X POST -i \
