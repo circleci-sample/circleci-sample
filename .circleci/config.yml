@@ -16,11 +16,13 @@ jobs:
             git config user.name "CircleCI"
             git config user.email "circleci@example.com"
       - run:
-          name: "更新結果をコミットする"
+          name: "BRANCH環境変数をエクスポートする"
           command: |
             echo 'export BRANCH=npm_audit_fix/${CIRCLE_SHA1}' >> $BASH_ENV
             source $BASH_ENV
-
+      - run:
+          name: "更新内容をコミットする"
+          command: |
             git branch $BRANCH
             git checkout $BRANCH
             git add package.json package-lock.json
