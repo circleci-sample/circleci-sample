@@ -9,7 +9,7 @@ jobs:
       - run: # ・・・ 1
           name: "npm audit結果を.npm_audit.logファイルに格納する"
           command: |
-            npm audit --parseable | awk -F $'\t' '{print $4}' >> .npm_audit.log
+            npm audit --parseable | awk -F $'\t' '{print $4}' >> .npm_audit.log || true
 
             if [ $? = 0 ]; then
               echo "脆弱性のある依存パッケージなし"
