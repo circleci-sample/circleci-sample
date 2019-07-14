@@ -33,7 +33,7 @@ jobs:
                 {
                     "title": "npm audit fix",
                     "base": "master",
-                    "head" : "${CIRCLE_PROJECT_USERNAME}:${branch}"
+                    "head" : "origin:${branch}"
                 }
             EOF
 workflows:
