@@ -24,8 +24,10 @@ jobs:
             git branch $BRANCH
             git checkout $BRANCH
             git add package.json package-lock.json
-            git commit -m "Security Update from ${CIRCLE_BUILD_URL}"
-            git push origin $BRANCH || echo "No vulnerabilities found"
+            git commit -m "Security Update from ${CIRCLE_BUILD_URL}" && git push origin $BRANCH
+      - run:
+          when: on_fail
+          command: echo "No vulnerabilities found"
       - run:
           name: "GitHub PRを作成する"
           command: |
