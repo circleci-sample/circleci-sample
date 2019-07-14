@@ -24,6 +24,9 @@ jobs:
             git branch $BRANCH
             git checkout $BRANCH
             git add package.json package-lock.json
+      - run:
+          name: "変更があればGitHub PRを作成する"
+          command: |
             git commit -m "Security Update from ${CIRCLE_BUILD_URL}" && git push origin $BRANCH &&
             curl -u "${GITHUB_USER}":"${GITHUB_TOKEN}" -X POST -i \
                 https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls \
@@ -33,7 +36,7 @@ jobs:
                     "base": "master",
                     "head" : "${BRANCH}"
                 }
-            EOF
+            EOF || true
 workflows:
   version: 2
   audit:
