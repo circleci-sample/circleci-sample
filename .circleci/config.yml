@@ -23,7 +23,7 @@ jobs:
             git checkout $branch
             git add package.json package-lock.json
             git commit -m "Security Update from ${CIRCLE_BUILD_URL}"
-            git push origin
+            git push -f origin
 
             curl -u "${GITHUB_USER}":"${GITHUB_TOKEN}" -X POST -i \
                 https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls \
