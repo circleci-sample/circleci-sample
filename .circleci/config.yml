@@ -38,6 +38,9 @@ jobs:
                     "head" : "${BRANCH}"
                 }
             EOF
+      - run:
+          when: on_fail
+          command: "No vulnerabilities found"
 workflows:
   version: 2
   audit:
