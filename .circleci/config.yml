@@ -4,8 +4,6 @@ jobs:
   audit_job:
     docker:
         - image: circleci/node
-    environment:
-        BRANCH: npm_audit_fix/${CIRCLE_SHA1}
     steps:
       - checkout
       - run:
@@ -20,6 +18,7 @@ jobs:
       - run:
           name: "更新結果をコミットする"
           command: |
+            echo 'export BRANCH=npm_audit_fix/${CIRCLE_SHA1}' >> $BASH_ENV
             git branch $BRANCH
             git checkout $BRANCH
             git add package.json package-lock.json
