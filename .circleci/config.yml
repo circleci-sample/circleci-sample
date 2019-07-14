@@ -18,7 +18,7 @@ jobs:
       - run:
           name: "更新結果をコミットする"
           command: |
-            branch="aaaa"
+            export branch="npm_audit_test"
             git branch $branch
             git checkout $branch
             git add package.json package-lock.json
