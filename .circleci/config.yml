@@ -18,7 +18,7 @@ jobs:
       - run:
           name: "更新結果をコミットする"
           command: |
-            branch="npm_audit/${CIRCLE_SHA1}"
+            branch="npm_audit"
             git branch $branch
             git checkout $branch
             git add package.json package-lock.json
