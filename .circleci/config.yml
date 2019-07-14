@@ -26,21 +26,19 @@ jobs:
             git add package.json package-lock.json
             git commit -m "Security Update from ${CIRCLE_BUILD_URL}" && git push origin $BRANCH || true
       - run:
-          name: "Nothing to commit"
-          when: on_fail
-          command: echo "No vulnerabilities found"
-      - run:
           name: "GitHub PRを作成する"
           command: |
-            curl -u "${GITHUB_USER}":"${GITHUB_TOKEN}" -X POST -i \
-                https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls \
-                -d @- \<< EOF
-                {
-                    "title": "npm audit fix",
-                    "base": "master",
-                    "head" : "${BRANCH}"
-                }
-            EOF
+            if ! npm audit; then
+              curl -u "${GITHUB_USER}":"${GITHUB_TOKEN}" -X POST -i \
+                  https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls \
+                  -d @- \<< EOF
+                  {
+                      "title": "npm audit fix",
+                      "base": "master",
+                      "head" : "${BRANCH}"
+                  }
+              EOF
+            fi
 workflows:
   version: 2
   audit:
