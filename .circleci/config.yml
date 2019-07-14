@@ -7,20 +7,31 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "npm audit結果を.npm_audit.logファイルに格納する"
+          name: ""
           command: |
-            npm audit --parseable | awk -F $'\t' '{print $4}' >> .npm_audit.log
+            npm audit fix
       - run:
-          name: "GitHub Issueに投げる"
-          when: on_fail
+          name: "Gitのセットアップ"
           command: |
-            body=`cat .npm_audit.log | sed 's/$/<br>/'`
+            git config user.name "CircleCI"
+            git config user.email "circleci@example.com"
+      - run:
+          name: "GitHub PRを作成する"
+          command: |
+            branch="npm_audit/${CIRCLE_SHA1}"
+            git branch $branch
+            git checkout $branch
+            git add package.json package-lock.json
+            git commit -m "Security Update from ${CIRCLE_BUILD_URL}"
+            git push origin
+
             curl -u "${GITHUB_USER}":"${GITHUB_TOKEN}" -X POST -i \
-                https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/issues \
+                https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls \
                 -d @- \<< EOF
                 {
-                    "title": "npm audit",
-                    "body" : "${body}"
+                    "title": "npm audit fix",
+                    "base": "master",
+                    "head" : "${branch}"
                 }
             EOF
 workflows:
