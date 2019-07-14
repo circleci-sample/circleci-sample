@@ -13,9 +13,13 @@ jobs:
       - run: # ・・・ 2
           name: "GitHub Issueに投げる"
           command: |
+            if [ ! -s .npm_audit.log ]; then
+              echo "脆弱性のある依存パッケージなし"
+              exit 0
+            fi
+
             body=`cat .npm_audit.log | sed 's/$/<br>/'`
 
-            if [ -s .npm_audit.log ]; then
             curl -u "${GITHUB_USER}":"${GITHUB_TOKEN}" -X POST -i \
                 https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/issues \
                 -d @- \<< EOF
@@ -24,7 +28,6 @@ jobs:
                     "body" : "${body}"
                 }
             EOF
-            fi
 workflows:
   version: 2
   audit:
