@@ -24,7 +24,7 @@ jobs:
             git branch $BRANCH
             git checkout $BRANCH
             git add package.json package-lock.json
-      - run: git commit -m "Security Update from ${CIRCLE_BUILD_URL}" && git push origin $BRANCH
+            git commit -m "Security Update from ${CIRCLE_BUILD_URL}" && git push origin $BRANCH || true
       - run:
           name: "Nothing to commit"
           when: on_fail
