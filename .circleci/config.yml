@@ -1,43 +1,36 @@
 version: 2.1
 
 jobs:
-  audit_job:
+  proofreading_job:
     docker:
-        - image: circleci/node
+      - image: circleci/node
+    environment:
+      REVIEWDOG_VERSION: 0.9.12
+    parameters:
+      REVIEWDOG_GITHUB_API_TOKEN:
+        type: env_var_name
+        default: REVIEWDOG_GITHUB_API_TOKEN
     steps:
       - checkout
-      - run: # ・・・ 1
-          name: "npm audit結果を.npm_audit.logファイルに格納する"
+      - run:
+          name: "依存モジュールをインストールする"
+          command: npm install
+      - run:
+          name: "textlintをREADME.mdに対して実行する"
+          command: $(npm bin)/textlint -f checkstyle README.md >> .textling.log
+      - run:
+          name: "reviewdogをインストールする"
           command: |
-            set +e
-            npm audit --parseable | awk -F $'\t' '{print $4}' >> .npm_audit.log
-
-            if [ "$?" -eq 0 ]; then
-              echo "脆弱性のある依存パッケージなし"
-              circleci step halt
-            fi
-      - run: # ・・・ 2
-          name: "GitHub Issueに投げる"
+            curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s  v$REVIEWDOG_VERSION
+      - run:
+          name: "reviewdogを実行する"
+          when: on_fail
           command: |
-            body=`cat .npm_audit.log | sed 's/$/<br>/'`
+            cat check_result .textlint.log | ./bin/reviewdog -f=checkstyle -name="textlint" -reporter="github-pr-check"
 
-            curl -u "${GITHUB_USER}":"${GITHUB_TOKEN}" -X POST -i \
-                https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/issues \
-                -d @- \<< EOF
-                {
-                    "title": "npm audit",
-                    "body" : "${body}"
-                }
-            EOF
 workflows:
   version: 2
-  audit:
-    #triggers:
-    #  - schedule:
-    #      cron: "0 0 * * *"
-    #      filters:
-    #        branches:
-    #          only:
-    #            - master
+  proofreading:
     jobs:
-      - audit_job
+      - proofreading_job:
+          REVIEWDOG_GITHUB_API_TOKEN: GITHUB_API_TOKEN
